@@ -39,23 +39,23 @@ def clean_sex(df) -> pd.DataFrame:
 
 
 def clean_age(df) -> pd.DataFrame:
-    guess_ages = np.zeros((2, 3))
-
-    for i in range(0, 2):
-        for j in range(0, 3):
-            guess_df = df[(df['Sex'] == i) & \
-                          (df['Pclass'] == j + 1)]['Age'].dropna()
-
-            age_guess = guess_df.median()
-
-            # Convert random age float to nearest .5 age
-            guess_ages[i, j] = int(age_guess / 0.5 + 0.5) * 0.5
-
-    for i in range(0, 2):
-        for j in range(0, 3):
-            df.loc[(df.Age.isnull()) & (df.Sex == i) & (df.Pclass == j + 1), 'Age'] = guess_ages[i, j]
-
-    df['Age'] = df['Age'].astype(int)
+    # guess_ages = np.zeros((2, 3))
+    #
+    # for i in range(0, 2):
+    #     for j in range(0, 3):
+    #         guess_df = df[(df['Sex'] == i) &
+    #                       (df['Pclass'] == j + 1)]['Age'].dropna()
+    #
+    #         age_guess = guess_df.median()
+    #
+    #         # Convert random age float to nearest .5 age
+    #         guess_ages[i, j] = int(age_guess / 0.5 + 0.5) * 0.5
+    #
+    # for i in range(0, 2):
+    #     for j in range(0, 3):
+    #         df.loc[(df.Age.isnull()) & (df.Sex == i) & (df.Pclass == j + 1), 'Age'] = guess_ages[i, j]
+    median_age = df['Age'][df.Age.notnull()].median()
+    df['Age'] = df['Age'].fillna(median_age).astype(int)
     df.loc[df['Age'] <= 16, 'Age'] = 0
     df.loc[(df['Age'] > 16) & (df['Age'] <= 32), 'Age'] = 1
     df.loc[(df['Age'] > 32) & (df['Age'] <= 48), 'Age'] = 2

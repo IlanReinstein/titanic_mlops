@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from app import preprocessing
+import preprocessing
 
 
 @pytest.fixture
