@@ -11,7 +11,7 @@ def prepare_data(df):
     tmp_df = clean_family_size(tmp_df)
     tmp_df = clean_embarked(tmp_df)
     tmp_df = clean_fare(tmp_df)
-    return tmp_df
+    return tmp_df[col_order]
 
 
 def drop_unwanted(df) -> pd.DataFrame:

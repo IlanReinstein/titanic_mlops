@@ -19,17 +19,14 @@ def predict():
         json_ = request.get_json(force=True)
         # print(request)
         # print(json_)
-        in_dat = pd.DataFrame.from_dict([json_])
+        in_dat = pd.DataFrame.from_dict(json_)
         features_df = prepare_data(in_dat).drop(columns='PassengerId')
         predictions = model.predict(features_df)
-        out_dict = {
-            "PassengerId": int(in_dat["PassengerId"][0]),
-            "Survived": str(predictions)
-        }
-        #
-        return jsonify(out_dict)
-        # return jsonify({'input': json_})  # , 200
+        out_df = pd.DataFrame(in_dat['PassengerId'])
+        out_df['Survived'] = predictions
 
+        return out_df.to_json(orient='records')
+        # return jsonify({'input': json_})
 
     except:
 
