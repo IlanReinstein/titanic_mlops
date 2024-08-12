@@ -3,6 +3,7 @@ import numpy as np
 
 
 def prepare_data(df):
+    col_order = ['PassengerId', 'Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'Title', 'IsAlone', 'Age*Class']
     tmp_df = drop_unwanted(df)
     tmp_df = clean_passenger_title(tmp_df)
     tmp_df = clean_sex(tmp_df)

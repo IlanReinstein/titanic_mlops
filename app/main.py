@@ -1,10 +1,9 @@
 import joblib
-import json
+
 import traceback
 import pandas as pd
 from flask import Flask, request, jsonify
 from preprocessing import prepare_data
-
 
 # Your API definition
 app = Flask(__name__)
@@ -24,12 +23,12 @@ def predict():
         features_df = prepare_data(in_dat).drop(columns='PassengerId')
         predictions = model.predict(features_df)
         out_dict = {
-            "PassengerId": in_dat["PassengerId"],
-            "Survived": predictions
+            "PassengerId": int(in_dat["PassengerId"][0]),
+            "Survived": str(predictions)
         }
         #
-        # return jsonify({'prediction': preds})
-        return jsonify({'input': json_})  # , 200
+        return jsonify(out_dict)
+        # return jsonify({'input': json_})  # , 200
 
 
     except:
@@ -39,6 +38,7 @@ def predict():
 
 if __name__ == '__main__':
     # Load "model.pkl"
+
     model = joblib.load('models/titanic_rf.pkl')
     print('Model loaded')
-    app.run( debug=True)
+    app.run(debug=True)
