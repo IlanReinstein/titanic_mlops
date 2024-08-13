@@ -18,6 +18,7 @@ The suggested cloud architecture to host this and whichever other model could be
 As a user requires predictions from our model the endpoint returns A JSON with the predicted values for the given entries.
 These, along with the processed features are then stored in the Feature Store and Prediction Tables as part of the data warehouse.
 
+The API was tested locally using Postman and the JSON files in the local directory. Further test automation for this part should be included.
 
 ## Challenges
 
@@ -28,6 +29,7 @@ These, along with the processed features are then stored in the Feature Store an
 - I am also unfamiliar with API deployment and proper testing. I have mostly built multiple batch jobs which are "easier" and do not require as much maintenance
 - Understanding the Git Workflow, other than simply creating the branches to add pieces of the application. I need to understand better the whole purpose of having a set workflow and building from it.
 - I have no familiarity with SonarCloud so within the timeframe I prioritized having a working endpoint.
+
 ## Potential Problems
 
 I am aware this is not the optimal solution for such deployment since there are multiple pitfalls:
