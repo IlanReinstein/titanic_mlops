@@ -20,8 +20,10 @@ def predict():
         # print(request)
         # print(json_)
         in_dat = pd.DataFrame.from_dict(json_)
+        # prepare data for predictions
         features_df = prepare_data(in_dat).drop(columns='PassengerId')
         predictions = model.predict(features_df)
+        # create empty dataframe for return
         out_df = pd.DataFrame(in_dat['PassengerId'])
         out_df['Survived'] = predictions
 
