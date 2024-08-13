@@ -6,4 +6,4 @@ This repo holds the code for a deployment of a Machine Learning model based on t
 
 The suggested cloud architecture to host this and whichever other model could be as follows:
 
-![MLOps Cloud Architecture](TitanicMLOps.dawio.png)
+![MLOps Cloud Architecture](TitanicMLOps.drawio.png)
