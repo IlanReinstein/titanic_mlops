@@ -3,28 +3,31 @@ import joblib
 import traceback
 import pandas as pd
 from flask import Flask, request, jsonify
-from sqlalchemy import create_engine, Column, Integer, Float
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from flask_sqlalchemy import SQLAlchemy
 from preprocessing import prepare_data
-
 
 # Your API definition
 app = Flask(__name__)
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///predictions.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 
+# Database model
+class Prediction(db.Model):
+    # id = db.Column(db.Integer, primary_key=True)
+    # feature1 = db.Column(db.Float, nullable=False)
+    # feature2 = db.Column(db.Float, nullable=False)
+    # processed_feature1 = db.Column(db.Float, nullable=False)
+    # processed_feature2 = db.Column(db.Float, nullable=False)
+    passenger_id = db.Column(db.Integer, primary_key=True)
+    result = db.Column(db.Float, nullable=True)
 
-DATABASE_URL = "sqlite:///./predictions.db"
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-# Create the database tables
-Base.metadata.create_all(bind=engine)
+# Initialize the database
+with app.app_context():
+    db.create_all()
 
-
-# @app.route('/')
-# def home():
-#     return "API is working!"
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -34,18 +37,33 @@ def predict():
         # print(json_)
         in_dat = pd.DataFrame.from_dict(json_)
         # prepare data for predictions
-        features_df = prepare_data(in_dat).drop(columns='PassengerId')
-        predictions = model.predict(features_df)
+        features_df = prepare_data(in_dat)
+        predictions = model.predict(features_df.drop(columns='PassengerId'))
         # create empty dataframe for return
         out_df = pd.DataFrame(in_dat['PassengerId'])
         out_df['Survived'] = predictions
 
+        # Save each record and prediction to the database
+        for i, row in out_df.iterrows():
+            print(row['PassengerId'])
+            new_prediction = Prediction(
+                passenger_id=int(row['PassengerId']),
+                # feature2=features_df.iloc[i]['feature2'],
+                # processed_feature1=features_df.iloc[i]['processed_feature1'],
+                # processed_feature2=features_df.iloc[i]['processed_feature2'],
+                result=predictions[i]
+            )
+            db.session.merge(new_prediction)
+
+        # Commit all records to the database
+        db.session.commit()
         return out_df.to_json(orient='records')
         # return jsonify({'input': json_})
 
-    except:
 
-        return jsonify({'trace': traceback.format_exc()})
+    except Exception as e:
+
+        return jsonify({'trace': str(e)})
 
 
 if __name__ == '__main__':
