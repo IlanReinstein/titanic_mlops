@@ -1,8 +1,14 @@
 FROM python:3.9
 WORKDIR /app
-COPY requirements.txt .
+COPY . /app
+
 RUN pip install -r requirements.txt
-COPY app/ .
-COPY models/ models/
-EXPOSE 5000
-CMD ["python", "app/main.py"]
+
+# Define environment variable
+ENV DATABASE_URL="sqlite:///./predictions.db"
+# ENV FLASK_APP=app/main.py
+# ENV FLASK_RUN_PORT=8000
+EXPOSE 8000
+# CMD ["flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT ["python"]
+CMD [ "app/main.py"]

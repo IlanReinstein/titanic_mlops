@@ -3,15 +3,28 @@ import joblib
 import traceback
 import pandas as pd
 from flask import Flask, request, jsonify
+from sqlalchemy import create_engine, Column, Integer, Float
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from preprocessing import prepare_data
+
 
 # Your API definition
 app = Flask(__name__)
 
 
-# @app.route("/")
-# def hello():
-#     return "Welcome to machine learning model APIs!"
+
+DATABASE_URL = "sqlite:///./predictions.db"
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+# Create the database tables
+Base.metadata.create_all(bind=engine)
+
+
+# @app.route('/')
+# def home():
+#     return "API is working!"
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -40,4 +53,4 @@ if __name__ == '__main__':
 
     model = joblib.load('models/titanic_rf.pkl')
     print('Model loaded')
-    app.run(debug=True)
+    app.run(debug=True, port=8000, host='0.0.0.0')

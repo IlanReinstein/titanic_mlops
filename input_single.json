@@ -1,1 +1,1 @@
-[{"PassengerId":1070,"Pclarss":2,"Name":"Becker, Mrs. Allen Oliver (Nellie E Baumgardner)","Sex":"female","Age":36.0,"SibSp":0,"Parch":3,"Ticket":"230136","Fare":39.0,"Cabin":"F4","Embarked":"S"}]
+[{"PassengerId":1070,"Pclass":2,"Name":"Becker, Mrs. Allen Oliver (Nellie E Baumgardner)","Sex":"female","Age":36.0,"SibSp":0,"Parch":3,"Ticket":"230136","Fare":39.0,"Cabin":"F4","Embarked":"S"}]
