@@ -13,7 +13,7 @@ The API was tested locally using Postman and the JSON files in the local directo
 
 ## Challenges
 
-- The hardest part has been to think about the database interaction. Moving away from my familiarit
+- The hardest part has been to think about the database interaction. 
 - I found it very challenging to try and separate the components of the API along with the database.
 - The model selected for deployment made it hard to think about scalability since it is a static problem from which we cannot get mor data for improvement of the model.
 - I am also unfamiliar with API deployment and proper testing. I have mostly built multiple batch jobs which are "easier" and do not require as much maintenance
@@ -24,7 +24,7 @@ The API was tested locally using Postman and the JSON files in the local directo
 
 I am aware this is not the optimal solution for such deployment since there are multiple pitfalls:
 
-- Latency: the API request should wait or depend on the data warehouse transactions to happen or be successful. Further modularization of such components would be ideal
+- Latency: the API request should wait or depend on the database transactions to happen or be successful. Further modularization of such components would be ideal
 - Not Fault Tolerant: Since these parts are all within the same API call, we do need to better handle the connections to the Feature Store or Data Warehouse, as it makes this API a bad abstraction of a batch job.
 - The current deployed model was trained locally, and it is not a service/model that could improve as there will not be new data
 
